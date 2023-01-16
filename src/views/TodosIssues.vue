@@ -7,9 +7,18 @@
     </form>
     <el-row :gutter="12">
       <!-- todo表示エリア -->
-      <TodoItem v-for="( todo, index ) in todos" :key="index" />
+      <el-col :span="12" v-for="( todo, index ) in todos" :key="index">
+        <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
+          <el-row :gutter="12">
+            <el-col :span="21">{{ todo }}</el-col>
+            <el-col :span="3">
+              <el-button @click="removeTodo(index)" type="success" icon="el-icon-check" circle></el-button>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
       <!-- issue表示エリア -->
-      <el-col :span="12"  v-for="( issue, index ) in issues" :key="issue.id">
+      <el-col :span="12" v-for="( issue, index ) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
           <el-row :gutter="12">
             <el-col :span="21">{{ issue.title }}</el-col>
@@ -25,12 +34,11 @@
 
 <script>
 import axios from 'axios';
-import TodoItem from '@/components/TodoItem';
 
 const client = axios.create({
-  baseURL: `${process.env.VUE_APP_GITHUB_ENDPOINT}`,
+  baseURL: `https://github.com/Lahanatou/Todo-project.git`,
   headers: {
-    'Authorization': `token ${process.env.VUE_APP_GITHUB_TOKEN}`,
+    'Authorization': `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`,
     'Accept': 'application/vnd.github.v3+json',
     'Content-Type':'application/json',
   },
@@ -38,9 +46,6 @@ const client = axios.create({
 
 export default {
   name: 'TodosIssues',
-  components: {
-    TodoItem
-  },
   data () {
     return {
       todo: '',
@@ -49,6 +54,7 @@ export default {
     }
   },
   methods: {
+    // ここからtodoの管理
     addTodo(){
       this.todos.push(this.todo);
       this.todo= '';
@@ -56,11 +62,12 @@ export default {
     removeTodo(index){
       this.todos.splice(index, 1);
     },
+    // ここからissueの管理
     closeIssue(index){
       const target = this.issues[index];
       client.patch(`/issues/${target.number}`,
           {
-            state: 'closed'
+            state: "closed"
           },
         )
         .then(() => {
