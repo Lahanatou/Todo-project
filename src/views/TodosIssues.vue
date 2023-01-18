@@ -30,7 +30,7 @@ import TodoItem from '@/components/TodoItem';
 const client = axios.create({
   baseURL: ` https://api.github.com/repos/Lahanatou/Todo-projet`,
   headers: {
-    'Authorization': `token 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`,
+    //'Authorization': `token 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`,
     'Accept': 'application/vnd.github.v3+json',
     'Content-Type':'application/json',
   },
