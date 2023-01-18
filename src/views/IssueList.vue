@@ -1,38 +1,61 @@
 <template>
   <div>
     <h1>issueリスト</h1>
-    <!-- getIssue()をクリックイベントに登録する -->
     <el-button type="success" @click="getIssues()">issue取得</el-button>
-    <!-- 取得したデータを確認するための暫定要素 -->
-    <div>{{ issues }}</div>
+    <el-row :gutter="12">
+      <!-- コード1 indexも使用できるように追加 -->
+      <el-col :span="12"  v-for="( issue, index ) in issues" :key="issue.id">
+        <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
+          <el-row :gutter="12">
+            <el-col :span="21">{{ issue.title }}</el-col>
+            <el-col :span="3">
+              <el-button @click="closeIssue(index)" type="success" icon="el-icon-check" circle></el-button>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
+  <script>
+  import axios from 'axios';
 
-<script>
-import axios from 'axios';
-
-export default {
-  name: 'IssueList',
-  data() {
-    return {
-      issues: []
-    }
+  const client = axios.create({
+  baseURL: ` https://api.github.com/repos/Lahanatou/Todo-projet`,
+  headers: {
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type':'application/json',
+    'Authorization': `token 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`
   },
-  methods: {
-    getIssues() {
-      axios.get('https://github.com/Lahanatou/Todo-projet/issues',
+})
+
+  export default {
+    name: 'IssueList',
+    data() {
+      return {
+        issues: []
+      }
+    },
+    methods: {
+      getIssues() {
+      client.get('/issues')
+        .then((res) => {
+          this.issues = res.data;
+      })
+    },
+    closeIssue(index){
+      const target = this.issues[index]
+        console.log(`/issues/${target.number}`)
+      client.patch(`/issues/${target.number}`,
           {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'Content-Type':'application/json',
-              'Authorization': `token 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`
-            },
+            state: 'closed'
           },
         )
-        .then((res) => {
-          this.issues = res;
+        .then(() => {
+        console.log (target)
+          this.issues.splice(index, 1)
       })
+    },
     }
   }
-}
-</script>
+  </script>

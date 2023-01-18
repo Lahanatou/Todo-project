@@ -7,7 +7,7 @@
     </form>
     <el-row :gutter="12">
       <!-- todo表示エリア -->
-      <TodoItem v-for="( todo, index ) in todos" :todo="todo" :key="index" @close="removeTodo(index)"/>
+      <TodoItem v-for="( todo, index ) in todos" :key="index" />
       <!-- issue表示エリア -->
       <el-col :span="12"  v-for="( issue, index ) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
@@ -28,12 +28,11 @@ import axios from 'axios';
 import TodoItem from '@/components/TodoItem';
 
 const client = axios.create({
-  baseURL: ` https://api.github.com/repos/Lahanatou/gem_task`,
+  baseURL: ` https://api.github.com/repos/Lahanatou/Todo-projet`,
   headers: {
-
+    'Authorization': `token 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`,
     'Accept': 'application/vnd.github.v3+json',
     'Content-Type':'application/json',
-    'Authorization': `token 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`
   },
 })
 
