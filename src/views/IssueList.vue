@@ -9,6 +9,7 @@
           <el-row :gutter="12">
             <el-col :span="21">{{ issue.title }}</el-col>
             <el-col :span="3">
+              <!-- コード2 @click="closeIssue(index)"を追加 -->
               <el-button @click="closeIssue(index)" type="success" icon="el-icon-check" circle></el-button>
             </el-col>
           </el-row>
@@ -29,33 +30,31 @@
   },
 })
 
-  export default {
-    name: 'IssueList',
-    data() {
-      return {
-        issues: []
-      }
-    },
-    methods: {
-      getIssues() {
-      client.get('/issues')
-        .then((res) => {
-          this.issues = res.data;
-      })
-    },
-    closeIssue(index){
-      const target = this.issues[index]
-        console.log(`/issues/${target.number}`)
-      client.patch(`/issues/${target.number}`,
-          {
-            state: 'closed'
-          },
-        )
-        .then(() => {
-        console.log (target)
-          this.issues.splice(index, 1)
-      })
-    },
+export default {
+  name: 'IssueList',
+  data() {
+    return {
+      issues: []
     }
+  },
+  methods: {
+    getIssues() {
+    client.get('/issues')
+      .then((res) => {
+        this.issues = res.data;
+    })
+  },
+  closeIssue(index){
+    const target = this.issues[index]
+    client.patch(`/issues/${target.number}`,
+        {
+          state: 'closed'
+        },
+      )
+      .then(() => {
+        this.issues.splice(index, 1)
+    })
+  },
   }
-  </script>
+}
+</script>
