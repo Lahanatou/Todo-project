@@ -26,7 +26,7 @@
   headers: {
     'Accept': 'application/vnd.github.v3+json',
     'Content-Type':'application/json',
-    //'Authorization': `token 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`
+    'Authorization': `token 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`
   },
 })
 
@@ -37,24 +37,14 @@ export default {
       issues: []
     }
   },
-  methods: {
-    getIssues() {
-    client.get('/issues')
-      .then((res) => {
-        this.issues = res.data;
-    })
-  },
   closeIssue(index){
-    const target = this.issues[index]
-    client.patch(`/issues/${target.number}`,
-        {
-          state: 'closed'
-        },
-      )
-      .then(() => {
-        this.issues.splice(index, 1)
-    })
-  },
+      this.issues.splice(index, 1);
+    },
+    getIssues() {
+      client.get('/issues')
+        .then((res) => {
+          this.issues = res.data;
+      })
   }
 }
 </script>
