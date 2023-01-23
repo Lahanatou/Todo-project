@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    // ここからtodoの管理
+     ここからtodoの管理
     addTodo(){
       this.todos.push(this.todo);
       this.todo= '';
