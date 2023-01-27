@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/todo-list">TodoList</router-link> |
       <router-link to="/issue-list">IssueList</router-link> |
-      <router-link to="/todos-issues">Todos-Issues</router-link>|
-    </div>
+      <router-link to="/todo-list">TodoList</router-link> |
+      <router-link to="/todos-issues">TodosIssue</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
     <router-view/>
   </div>
 </template>
@@ -19,16 +20,16 @@
   color: #2c3e50;
 }
 
-#nav {
+nav {
   padding: 30px;
 }
 
-#nav a {
+nav a {
   font-weight: bold;
   color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
+nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>

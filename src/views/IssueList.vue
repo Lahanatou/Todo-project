@@ -22,29 +22,41 @@
   import axios from 'axios';
 
   const client = axios.create({
-  baseURL: ` https://api.github.com/repos/Lahanatou/Todo-projet`,
+
+  baseURL: `https://api.github.com/repos/Lahanatou/Todo-projet`,
   headers: {
     'Accept': 'application/vnd.github.v3+json',
     'Content-Type':'application/json',
+    
     'Authorization': `token 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`
   },
 })
 
-export default {
-  name: 'IssueList',
-  data() {
-    return {
-      issues: []
-    }
-  },
-  closeIssue(index){
-      this.issues.splice(index, 1);
+  export default {
+    name: 'IssueList',
+    data() {
+      return {
+        issues: []
+      }
     },
-    getIssues() {
+    methods: {
+      getIssues() {
       client.get('/issues')
         .then((res) => {
           this.issues = res.data;
       })
+    },
+    closeIssue(index){
+      const target = this.issues[index]
+      client.patch(`/issues/${target.number}`,
+          {
+            state: 'closed'
+          },
+        )
+        .then(() => {
+          this.issues.splice(index, 1)
+      })
+    },
+    }
   }
-}
-</script>
+  </script>
